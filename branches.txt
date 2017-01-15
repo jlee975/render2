@@ -1,0 +1,15 @@
+render bunch of balls colliding in a box
+
+render branch
+  no render, just print positions to screen
+  render without textures
+  move camera
+  textures
+
+physics branch
+  no collisions, just floating off into space
+  collide with walls of box
+  collide with each other, test every ball vs every ball
+  don't test things that will never collide
+  collision test things other than spheres
+
