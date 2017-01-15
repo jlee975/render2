@@ -1,13 +1,20 @@
 #include "camera.h"
 
-void do_camera(rwvalue< double >& scene, rwvalue< double >& render)
+void do_camera(rwvalue< cam::event >& events, rwvalue< double >& render)
 {
+	cam::event e;
+
 	while (true) {
-		double x;
-		scene.wait(x);
-		if (x < 0)
+		events.wait(e);
+
+		switch (e.type)
+		{
+		case cam::UPDATE_TIME:
+			render.set(e.d);
 			break;
-		render.set(x);
+		case cam::QUIT:
+			return;
+		}
 	}
 }
 

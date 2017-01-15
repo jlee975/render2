@@ -1,6 +1,6 @@
 #include "physics.h"
 
-void do_physics(rwvalue< phys::event >& pevents, rwvalue< double >& scene)
+void do_physics(rwvalue< phys::event >& pevents, rwvalue< cam::event >& scene)
 {
 	phys::event e;
 
@@ -11,7 +11,7 @@ void do_physics(rwvalue< phys::event >& pevents, rwvalue< double >& scene)
 		switch (e.type)
 		{
 		case phys::UPDATE_TIME:
-			scene.set(e.d);
+			scene.emplace(cam::UPDATE_TIME, e.d);
 			break;
 		case phys::QUIT:
 			return;

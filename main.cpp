@@ -8,7 +8,7 @@
 int main()
 {
 	rwvalue< phys::event > pevents;
-	rwvalue< double > scene;
+	rwvalue< cam::event > scene;
 	rwvalue< double > render;
 
 	std::thread physics(do_physics, std::ref(pevents), std::ref(scene));
@@ -24,7 +24,7 @@ int main()
 //		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
 
-	scene.set(-1);
+	scene.emplace(cam::QUIT);
 	pevents.emplace(phys::QUIT);
 	camera.join();
 	physics.join();
