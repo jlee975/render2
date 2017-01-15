@@ -10,6 +10,7 @@ template< typename T >
 class rwvalue
 {
 public:
+	/// @todo Don't call T::T()
 	rwvalue() : isset(false) { }
 
 	template< typename U >
@@ -20,6 +21,12 @@ public:
 		isset = true;
 		lk.unlock();
 		cv.notify_one();
+	}
+
+	template< typename... Args >
+	void emplace(Args&&... args)
+	{
+		set(T(std::forward< Args >(args)...));
 	}
 
 	void wait(T& dest)

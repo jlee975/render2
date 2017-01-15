@@ -16,9 +16,7 @@ int main()
 
 	for (double t = 0; t < 10; t += 1./60)
 	{
-		phys::event e = { phys::UPDATE_TIME };
-		e.d = t;
-		pevents.set(e);
+		pevents.emplace(phys::UPDATE_TIME, t);
 
 		double x;
 		render.wait(x);
@@ -27,10 +25,7 @@ int main()
 	}
 
 	scene.set(-1);
-	{
-		phys::event e = { phys::QUIT };
-		pevents.set(e);
-	}
+	pevents.emplace(phys::QUIT);
 	camera.join();
 	physics.join();
 
