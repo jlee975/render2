@@ -3,7 +3,9 @@ CONFIG += console c++14
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    camera.cpp \
+    physics.cpp
 
 DISTFILES += \
     branches.txt
@@ -11,4 +13,6 @@ DISTFILES += \
 LIBS += -pthread
 
 HEADERS += \
-    rwvalue.h
+    rwvalue.h \
+    camera.h \
+    physics.h
