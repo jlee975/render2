@@ -1,24 +1,24 @@
-#ifndef RWVALUE_H
-#define RWVALUE_H
+#ifndef RWQUEUE_H
+#define RWQUEUE_H
 
 #include <mutex>
 #include <condition_variable>
+#include <list>
 
-// one thread writes to, one thread reads from
-// value can only be read once
+// A single-produce, single-consumer queue
+/// @todo Make lock-free
 template< typename T >
-class rwvalue
+class rwqueue
 {
 public:
-	/// @todo Don't call T::T()
-	rwvalue() : isset(false) { }
+	rwqueue() { }
 
 	template< typename U >
 	void set(U&& x)
 	{
 		std::unique_lock< std::mutex > lk(mut);
-		value = std::forward< U >(x);
-		isset = true;
+
+		values.push_back(std::forward< U >(x));
 		lk.unlock();
 		cv.notify_one();
 	}
@@ -26,26 +26,29 @@ public:
 	template< typename... Args >
 	void emplace(Args&&... args)
 	{
-		set(T(std::forward< Args >(args)...));
+		std::unique_lock< std::mutex > lk(mut);
+
+		values.emplace_back(std::forward< Args >(args)...);
+		lk.unlock();
+		cv.notify_one();
 	}
 
 	void wait(T& dest)
 	{
 		std::unique_lock< std::mutex > lk(mut);
-		while (!isset)
+		while (values.empty())
 		{
 			cv.wait(lk);
 		}
-		dest = std::move(value);
-		isset = false;
+		dest = std::move(values.front());
+		values.pop_front();
 	}
 
 private:
 	std::mutex mut;
 	std::condition_variable cv;
 
-	bool isset;
-	T value;
+	std::list< T > values;
 };
 
 #endif // RWVALUE_H

@@ -7,9 +7,9 @@
 
 int main()
 {
-	rwvalue< event > pevents;
-	rwvalue< event > scene;
-	rwvalue< double > render;
+	rwqueue< event > pevents;
+	rwqueue< event > scene;
+	rwqueue< double > render;
 
 	std::thread physics(do_physics, std::ref(pevents), std::ref(scene));
 	std::thread camera(do_camera, std::ref(scene), std::ref(render));

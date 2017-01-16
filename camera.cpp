@@ -1,6 +1,6 @@
 #include "camera.h"
 
-void do_camera(rwvalue< event >& events, rwvalue< double >& render)
+void do_camera(rwqueue< event >& events, rwqueue< double >& render)
 {
 	event e;
 

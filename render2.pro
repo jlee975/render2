@@ -13,7 +13,7 @@ DISTFILES += \
 LIBS += -pthread
 
 HEADERS += \
-    rwvalue.h \
     camera.h \
     physics.h \
-    events.h
+    events.h \
+    rwqueue.h

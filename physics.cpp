@@ -1,6 +1,6 @@
 #include "physics.h"
 
-void do_physics(rwvalue< event >& pevents, rwvalue< event >& scene)
+void do_physics(rwqueue< event >& pevents, rwqueue< event >& scene)
 {
 	event e;
 
