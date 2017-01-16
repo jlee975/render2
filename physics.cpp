@@ -1,8 +1,8 @@
 #include "physics.h"
 
-void do_physics(rwvalue< phys::event >& pevents, rwvalue< cam::event >& scene)
+void do_physics(rwvalue< event >& pevents, rwvalue< event >& scene)
 {
-	phys::event e;
+	event e;
 
 	while (true) {
 		// Read time, push new positions,etc to cameras
@@ -10,10 +10,10 @@ void do_physics(rwvalue< phys::event >& pevents, rwvalue< cam::event >& scene)
 
 		switch (e.type)
 		{
-		case phys::UPDATE_TIME:
-			scene.emplace(cam::UPDATE_TIME, e.d);
+		case UPDATE_TIME:
+			scene.emplace(UPDATE_TIME, e.d);
 			break;
-		case phys::QUIT:
+		case QUIT:
 			return;
 		}
 	}

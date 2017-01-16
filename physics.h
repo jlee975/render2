@@ -6,6 +6,6 @@
 
 /* Manages objects and moves them about
  */
-void do_physics(rwvalue< phys::event >& e, rwvalue< cam::event >& scene);
+void do_physics(rwvalue< event >& e, rwvalue< event >& scene);
 
 #endif // PHYSICS_H

@@ -7,8 +7,8 @@
 
 int main()
 {
-	rwvalue< phys::event > pevents;
-	rwvalue< cam::event > scene;
+	rwvalue< event > pevents;
+	rwvalue< event > scene;
 	rwvalue< double > render;
 
 	std::thread physics(do_physics, std::ref(pevents), std::ref(scene));
@@ -16,7 +16,7 @@ int main()
 
 	for (double t = 0; t < 10; t += 1./60)
 	{
-		pevents.emplace(phys::UPDATE_TIME, t);
+		pevents.emplace(UPDATE_TIME, t);
 
 		double x;
 		render.wait(x);
@@ -24,8 +24,8 @@ int main()
 //		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
 
-	scene.emplace(cam::QUIT);
-	pevents.emplace(phys::QUIT);
+	scene.emplace(QUIT);
+	pevents.emplace(QUIT);
 	camera.join();
 	physics.join();
 
