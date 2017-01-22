@@ -18,4 +18,5 @@ HEADERS += \
     events.h \
     rwqueue.h \
     config.h \
-    geo/vector.h
+    geo/vector.h \
+    event_queue.h

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-void do_physics(rwqueue< event >& pevents, rwqueue< event >& scene)
+void do_physics(event_queue& pevents, event_queue& scene)
 {
 	event e;
 

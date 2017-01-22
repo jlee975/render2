@@ -1,11 +1,10 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-#include "rwqueue.h"
-#include "events.h"
+#include "event_queue.h"
 
 /* Manages objects and moves them about
  */
-void do_physics(rwqueue< event >& e, rwqueue< event >& scene);
+void do_physics(event_queue& e, event_queue& scene);
 
 #endif // PHYSICS_H

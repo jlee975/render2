@@ -1,9 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "rwqueue.h"
-#include "events.h"
+#include "event_queue.h"
 
-void do_camera(rwqueue< event >& scene, rwqueue< event >& render);
+void do_camera(event_queue& scene, event_queue& render);
 
 #endif // CAMERA_H
