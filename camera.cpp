@@ -2,11 +2,10 @@
 
 void do_camera(event_queue& events, event_queue& render)
 {
-	event e;
-
 	while (true) {
-		events.wait(e);
+		events.wait();
 
+		event& e = events.front();
 		switch (e.type)
 		{
 		case event::UPDATE_POSITIONS:
@@ -15,6 +14,8 @@ void do_camera(event_queue& events, event_queue& render)
 		case event::QUIT:
 			return;
 		}
+
+		events.pop();
 	}
 }
 

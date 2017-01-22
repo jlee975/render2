@@ -3,7 +3,6 @@
 
 #include <mutex>
 #include <condition_variable>
-#include <list>
 
 // A single-produce, single-consumer queue
 /// @todo Make lock-free
@@ -15,44 +14,112 @@ class rwqueue
 public:
 	typedef T value_type;
 
-	rwqueue() { }
+	rwqueue() : head(nullptr), tail(nullptr) { }
 
-	template< typename U >
-	void set(U&& x)
+	rwqueue(const rwqueue&) = delete;
+	rwqueue(rwqueue&&) = delete;
+	rwqueue& operator=(const rwqueue&) = delete;
+	rwqueue& operator=(rwqueue&&) = delete;
+
+	~rwqueue()
 	{
 		std::unique_lock< std::mutex > lk(mut);
+		item* t = head;
+		while (t != nullptr)
+		{
+			item* next = t->next;
+			delete t;
+			t = next;
+		}
+	}
 
-		values.push_back(std::forward< U >(x));
-		lk.unlock();
-		cv.notify_one();
+	template< typename U >
+	void push(U&& x)
+	{
+		append(new item(std::forward< U >(x)));
 	}
 
 	template< typename... Args >
 	void emplace(Args&&... args)
 	{
+		append(new item(std::forward< Args >(args)...));
+	}
+
+	void wait()
+	{
+		std::unique_lock< std::mutex > lk(mut);
+		while (head == nullptr)
+		{
+			cv.wait(lk);
+		}
+	}
+
+	T& front()
+	{
+		return head->value;
+	}
+
+	const T& front() const
+	{
+		return head->value;
+	}
+
+	void pop()
+	{
+		item* t = nullptr;
+		{
+			std::unique_lock< std::mutex > lk(mut);
+			if (head != nullptr)
+			{
+				t = head;
+				if (t->next != nullptr)
+				{
+					head = t->next;
+				}
+				else
+				{
+					head = nullptr;
+					tail = nullptr;
+				}
+			}
+		}
+		delete t;
+	}
+
+private:
+	struct item
+	{
+		template< typename... Args >
+		item(Args&&... args) : next(nullptr), value(std::forward< Args >(args)...)
+		{
+		}
+
+		item* next;
+		T value;
+	};
+
+	void append(item* p)
+	{
 		std::unique_lock< std::mutex > lk(mut);
 
-		values.emplace_back(std::forward< Args >(args)...);
+		if (tail)
+		{
+			tail->next = p;
+		}
+		else
+		{
+			head = p;
+		}
+		tail = p;
 		lk.unlock();
 		cv.notify_one();
 	}
 
-	void wait(T& dest)
-	{
-		std::unique_lock< std::mutex > lk(mut);
-		while (values.empty())
-		{
-			cv.wait(lk);
-		}
-		dest = std::move(values.front());
-		values.pop_front();
-	}
-
-private:
 	std::mutex mut;
 	std::condition_variable cv;
 
-	std::list< T > values;
+	item* head;
+	item* tail;
 };
 
 #endif // RWVALUE_H

@@ -28,8 +28,8 @@ int main()
 	{
 		pevents.emplace(event::UPDATE_TIME, t);
 
-		event e;
-		render.wait(e);
+		render.wait();
+		event& e = render.front();
 		switch (e.type)
 		{
 		case event::UPDATE_POSITIONS:
@@ -39,6 +39,7 @@ int main()
 			}
 			break;
 		}
+		render.pop();
 
 //		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}

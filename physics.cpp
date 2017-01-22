@@ -10,8 +10,9 @@ void do_physics(event_queue& pevents, event_queue& scene)
 
 	while (true) {
 		// Read time, push new positions,etc to cameras
-		pevents.wait(e);
+		pevents.wait();
 
+		event& e = pevents.front();
 		switch (e.type)
 		{
 		case event::UPDATE_TIME:
@@ -31,5 +32,6 @@ void do_physics(event_queue& pevents, event_queue& scene)
 			objects.push_back(e.u.o);
 			break;
 		}
+		pevents.pop();
 	}
 }
