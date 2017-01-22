@@ -9,10 +9,10 @@ void do_camera(rwqueue< event >& events, rwqueue< event >& render)
 
 		switch (e.type)
 		{
-		case UPDATE_POSITIONS:
+		case event::UPDATE_POSITIONS:
 			render.emplace(std::move(e));
 			break;
-		case QUIT:
+		case event::QUIT:
 			return;
 		}
 	}

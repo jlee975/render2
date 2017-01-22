@@ -20,19 +20,19 @@ int main()
 		{
 			obj t = { 0, { i, j, 0 }, { 1, 0, 0 } };
 
-			pevents.emplace(CREATE_OBJECT, t);
+			pevents.emplace(event::CREATE_OBJECT, t);
 		}
 	}
 
 	for (double t = 0; t < 10; t += 1./60)
 	{
-		pevents.emplace(UPDATE_TIME, t);
+		pevents.emplace(event::UPDATE_TIME, t);
 
 		event e;
 		render.wait(e);
 		switch (e.type)
 		{
-		case UPDATE_POSITIONS:
+		case event::UPDATE_POSITIONS:
 			for (std::size_t i = 0, n = e.u.posns.size(); i < n; ++i)
 			{
 				std::cout << e.u.posns[i].x << "," << e.u.posns[i].y << "," << e.u.posns[i].z << std::endl;
@@ -43,8 +43,8 @@ int main()
 //		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
 
-	scene.emplace(QUIT);
-	pevents.emplace(QUIT);
+	scene.emplace(event::QUIT);
+	pevents.emplace(event::QUIT);
 	camera.join();
 	physics.join();
 

@@ -27,16 +27,16 @@ struct obj
 	point vel;
 };
 
-enum event_type {
-	NOEVENT,
-	UPDATE_TIME,
-	UPDATE_POSITIONS,
-	QUIT,
-	CREATE_OBJECT
-};
-
 struct event
 {
+	enum event_type {
+		NOEVENT,
+		UPDATE_TIME,
+		UPDATE_POSITIONS,
+		QUIT,
+		CREATE_OBJECT
+	};
+
 	event() : type(NOEVENT){ }
 	event(const event& e) : type(e.type) { copy(e); }
 	explicit event(event_type t) : type(t) { }

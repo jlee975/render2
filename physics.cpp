@@ -14,7 +14,7 @@ void do_physics(rwqueue< event >& pevents, rwqueue< event >& scene)
 
 		switch (e.type)
 		{
-		case UPDATE_TIME:
+		case event::UPDATE_TIME:
 		{
 			const double t = e.u.d;
 			std::vector< point > posns;
@@ -22,12 +22,12 @@ void do_physics(rwqueue< event >& pevents, rwqueue< event >& scene)
 			{
 				posns.push_back(objects[i].pos + (t - objects[i].time) * objects[i].vel);
 			}
-			scene.emplace(UPDATE_POSITIONS, std::move(posns));
+			scene.emplace(event::UPDATE_POSITIONS, std::move(posns));
 		}
 			break;
-		case QUIT:
+		case event::QUIT:
 			return;
-		case CREATE_OBJECT:
+		case event::CREATE_OBJECT:
 			objects.push_back(e.u.o);
 			break;
 		}
