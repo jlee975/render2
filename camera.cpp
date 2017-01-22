@@ -2,7 +2,8 @@
 
 void do_camera(event_queue& events, event_queue& render)
 {
-	while (true) {
+	for (bool run = true; run; )
+	{
 		events.wait();
 
 		event& e = events.front();
@@ -12,7 +13,8 @@ void do_camera(event_queue& events, event_queue& render)
 			render.emplace(std::move(e));
 			break;
 		case event::QUIT:
-			return;
+			run = false;
+			break;
 		}
 
 		events.pop();
