@@ -35,7 +35,7 @@ point< N, Real > operator+(const point< N, Real >& l, const point< N, Real >& r)
 }
 
 template< std::size_t N, typename Real >
-point< N, Real > operator*(double s, const point< N, Real >& p)
+point< N, Real > operator*(Real s, const point< N, Real >& p)
 {
 	point< N, Real > q;
 
@@ -43,6 +43,13 @@ point< N, Real > operator*(double s, const point< N, Real >& p)
 		q.v[i] = s * p.v[i];
 	return q;
 }
+
+template< std::size_t N, typename Real >
+point< N, Real > operator*(const point< N, Real >& p, Real s)
+{
+	return s * p;
+}
+
 }
 
 #endif // VECTOR_H
