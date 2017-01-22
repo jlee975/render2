@@ -13,6 +13,8 @@ template< typename T >
 class rwqueue
 {
 public:
+	typedef T value_type;
+
 	rwqueue() { }
 
 	template< typename U >
