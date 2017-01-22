@@ -16,4 +16,5 @@ HEADERS += \
     camera.h \
     physics.h \
     events.h \
-    rwqueue.h
+    rwqueue.h \
+    config.h
