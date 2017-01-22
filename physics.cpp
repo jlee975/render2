@@ -4,11 +4,10 @@
 
 void do_physics(event_queue& pevents, event_queue& scene)
 {
-	event e;
-
 	std::vector< obj > objects;
 
-	while (true) {
+	for (bool run = true; run; )
+	{
 		// Read time, push new positions,etc to cameras
 		pevents.wait();
 
@@ -27,7 +26,8 @@ void do_physics(event_queue& pevents, event_queue& scene)
 		}
 			break;
 		case event::QUIT:
-			return;
+			run = false;
+			break;
 		case event::CREATE_OBJECT:
 			objects.push_back(e.u.o);
 			break;
