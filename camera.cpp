@@ -1,6 +1,6 @@
 #include "camera.h"
 
-void do_camera(rwqueue< event >& events, rwqueue< double >& render)
+void do_camera(rwqueue< event >& events, rwqueue< event >& render)
 {
 	event e;
 
@@ -9,8 +9,8 @@ void do_camera(rwqueue< event >& events, rwqueue< double >& render)
 
 		switch (e.type)
 		{
-		case UPDATE_TIME:
-			render.set(e.d);
+		case UPDATE_POSITIONS:
+			render.emplace(std::move(e));
 			break;
 		case QUIT:
 			return;

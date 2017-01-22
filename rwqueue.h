@@ -7,6 +7,8 @@
 
 // A single-produce, single-consumer queue
 /// @todo Make lock-free
+/// @todo Don't copy out the value. Once wait returns, simply access the value,
+/// then call pop (front) when done
 template< typename T >
 class rwqueue
 {

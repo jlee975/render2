@@ -4,6 +4,6 @@
 #include "rwqueue.h"
 #include "events.h"
 
-void do_camera(rwqueue< event >& scene, rwqueue< double >& render);
+void do_camera(rwqueue< event >& scene, rwqueue< event >& render);
 
 #endif // CAMERA_H
