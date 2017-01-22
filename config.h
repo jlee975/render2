@@ -1,22 +1,9 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-struct point
-{
-	double x;
-	double y;
-	double z;
-};
+#include "geo/vector.h"
 
-inline point operator+(const point& l, const point& r)
-{
-	return { l.x + r.x, l.y + r.y, l.z + r.z };
-}
-
-inline point operator*(double s, const point& p)
-{
-	return { p.x * s, p.y * s, p.z * s };
-}
+typedef geo::point< 3, double > point;
 
 struct obj
 {

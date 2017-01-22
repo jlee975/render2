@@ -17,4 +17,5 @@ HEADERS += \
     physics.h \
     events.h \
     rwqueue.h \
-    config.h
+    config.h \
+    geo/vector.h

@@ -35,7 +35,7 @@ int main()
 		case event::UPDATE_POSITIONS:
 			for (std::size_t i = 0, n = e.u.posns.size(); i < n; ++i)
 			{
-				std::cout << e.u.posns[i].x << "," << e.u.posns[i].y << "," << e.u.posns[i].z << std::endl;
+				std::cout << e.u.posns[i].at<0>() << "," << e.u.posns[i].at<1>() << "," << e.u.posns[i].at<2>() << std::endl;
 			}
 			break;
 		}
