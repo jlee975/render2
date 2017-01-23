@@ -36,7 +36,7 @@ int main()
 		{
 		case event::UPDATE_POSITIONS:
 		{
-			update_positions_event& u = e.update_positions();
+			update_positions_event& u = e.get_update_positions();
 
 			for (std::size_t i = 0, n = u.posns.size(); i < n; ++i)
 			{

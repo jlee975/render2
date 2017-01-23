@@ -11,7 +11,7 @@ void do_camera(event_queue& events, event_queue& render)
 		{
 		case event::UPDATE_POSITIONS:
 			/// @todo Move the event with a splice-like function
-			render.emplace(e.update_positions());
+			render.emplace(e.get_update_positions());
 			break;
 		case event::QUIT:
 			run = false;

@@ -16,7 +16,7 @@ void do_physics(event_queue& pevents, event_queue& scene)
 		{
 		case event::UPDATE_TIME:
 		{
-			update_time_event& u = e.update_time();
+			update_time_event& u = e.get_update_time();
 			update_positions_event uppos;
 			for (std::size_t i = 0, n = objects.size(); i < n; ++i)
 			{
@@ -31,7 +31,7 @@ void do_physics(event_queue& pevents, event_queue& scene)
 			break;
 		case event::CREATE_OBJECT:
 		{
-			create_object_event& u = e.create_object();
+			create_object_event& u = e.get_create_object();
 			objects.push_back(u.o);
 		}
 			break;

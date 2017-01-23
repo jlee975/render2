@@ -69,19 +69,24 @@ public:
 		return type_;
 	}
 
-	update_positions_event& update_positions()
+	update_positions_event& get_update_positions()
 	{
 		return u.update_positions;
 	}
 
-	update_time_event& update_time()
+	update_time_event& get_update_time()
 	{
 		return u.update_time;
 	}
 
-	create_object_event& create_object()
+	create_object_event& get_create_object()
 	{
 		return u.create_object;
+	}
+
+	quit_event& get_quit()
+	{
+		return u.quit;
 	}
 
 private:
