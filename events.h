@@ -33,10 +33,8 @@ public:
 	};
 
 	event() : type_(NOEVENT){ }
-	event(const event& e) { copy(e); }
-
-	/// @todo Implement
-	event(event&& e) { move(std::move(e)); }
+	event(const event&) = delete;
+	event(event&&) = delete;
 
 	explicit event(update_time_event e) : type_(UPDATE_TIME)
 	{
@@ -63,21 +61,8 @@ public:
 		destroy();
 	}
 
-	event& operator=(const event& e)
-	{
-		destroy();
-		copy(e);
-
-		return *this;
-	}
-
-	/// @todo Implement
-	event& operator=(event&& e)
-	{
-		destroy();
-		move(std::move(e));
-		return *this;
-	}
+	event& operator=(const event&) = delete;
+	event& operator=(event&&) = delete;
 
 	event_type type() const
 	{
@@ -109,58 +94,6 @@ private:
 		update_positions_event update_positions;
 		quit_event quit;
 	};
-
-	// Precondition: type_ == NOEVENT and u has nothing in it
-	void copy(const event& e)
-	{
-		switch(e.type_)
-		{
-		case NOEVENT:
-			break;
-		case UPDATE_TIME:
-			new (&u.update_time) update_time_event(e.u.update_time);
-			break;
-		case UPDATE_POSITIONS:
-			new (&u.update_positions) update_positions_event(e.u.update_positions);
-			break;
-		case QUIT:
-			new (&u.quit) quit_event(e.u.quit);
-			break;
-		case CREATE_OBJECT:
-			new (&u.create_object) create_object_event(e.u.create_object);
-			break;
-		}
-
-		type_ = e.type_;
-	}
-
-	void move(event&& e)
-	{
-		switch(e.type_)
-		{
-		case NOEVENT:
-			break;
-		case UPDATE_TIME:
-			new (&u.update_time) update_time_event(std::move(e.u.update_time));
-			e.u.update_time.~update_time_event();
-			break;
-		case UPDATE_POSITIONS:
-			new (&u.update_positions) update_positions_event(std::move(e.u.update_positions));
-			e.u.update_positions.~update_positions_event();
-			break;
-		case QUIT:
-			new (&u.quit) quit_event(std::move(e.u.quit));
-			e.u.quit.~quit_event();
-			break;
-		case CREATE_OBJECT:
-			new (&u.create_object) create_object_event(std::move(e.u.create_object));
-			e.u.create_object.~create_object_event();
-			break;
-		}
-
-		type_ = e.type_;
-		e.type_ = NOEVENT;
-	}
 
 	void destroy()
 	{
