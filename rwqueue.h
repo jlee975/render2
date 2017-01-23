@@ -6,8 +6,7 @@
 
 // A single-produce, single-consumer queue
 /// @todo Make lock-free
-/// @todo Don't copy out the value. Once wait returns, simply access the value,
-/// then call pop (front) when done
+/// @todo Different mutex for head and tail
 template< typename T >
 class rwqueue
 {
@@ -45,6 +44,7 @@ public:
 		append(new item(std::forward< Args >(args)...));
 	}
 
+	/// @todo Don't think we need to lock if head is not null
 	void wait()
 	{
 		std::unique_lock< std::mutex > lk(mut);
