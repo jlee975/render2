@@ -7,7 +7,7 @@ void do_camera(event_queue& events, event_queue& render)
 		events.wait();
 
 		event& e = events.front();
-		switch (e.type)
+		switch (e.type())
 		{
 		case event::UPDATE_POSITIONS:
 			render.emplace(std::move(e));

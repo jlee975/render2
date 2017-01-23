@@ -12,24 +12,28 @@ void do_physics(event_queue& pevents, event_queue& scene)
 		pevents.wait();
 
 		event& e = pevents.front();
-		switch (e.type)
+		switch (e.type())
 		{
 		case event::UPDATE_TIME:
 		{
-			const double t = e.u.d;
-			std::vector< point > posns;
+			update_time_event& u = e.update_time();
+			update_positions_event uppos;
 			for (std::size_t i = 0, n = objects.size(); i < n; ++i)
 			{
-				posns.push_back(objects[i].pos + (t - objects[i].time) * objects[i].vel);
+				uppos.posns.push_back(objects[i].pos + (u.time - objects[i].time) * objects[i].vel);
 			}
-			scene.emplace(event::UPDATE_POSITIONS, std::move(posns));
+
+			scene.emplace(std::move(uppos));
 		}
 			break;
 		case event::QUIT:
 			run = false;
 			break;
 		case event::CREATE_OBJECT:
-			objects.push_back(e.u.o);
+		{
+			create_object_event& u = e.create_object();
+			objects.push_back(u.o);
+		}
 			break;
 		}
 		pevents.pop();

@@ -18,25 +18,31 @@ int main()
 	{
 		for (int j = 0; j < 10; ++j)
 		{
-			obj t = { 0, { i, j, 0 }, { 1, 0, 0 } };
+			const create_object_event e = { { 0, { i, j, 0 }, { 1, 0, 0 } } };
 
-			pevents.emplace(event::CREATE_OBJECT, t);
+			pevents.emplace(e);
 		}
 	}
 
 	for (double t = 0; t < 10; t += 1./60)
 	{
-		pevents.emplace(event::UPDATE_TIME, t);
+		const update_time_event x = { t };
+
+		pevents.emplace(x);
 
 		render.wait();
 		event& e = render.front();
-		switch (e.type)
+		switch (e.type())
 		{
 		case event::UPDATE_POSITIONS:
-			for (std::size_t i = 0, n = e.u.posns.size(); i < n; ++i)
+		{
+			update_positions_event& u = e.update_positions();
+
+			for (std::size_t i = 0, n = u.posns.size(); i < n; ++i)
 			{
-				std::cout << e.u.posns[i].at<0>() << "," << e.u.posns[i].at<1>() << "," << e.u.posns[i].at<2>() << std::endl;
+				std::cout << u.posns[i].at<0>() << "," << u.posns[i].at<1>() << "," << u.posns[i].at<2>() << std::endl;
 			}
+		}
 			break;
 		}
 		render.pop();
@@ -44,8 +50,9 @@ int main()
 //		std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
 
-	scene.emplace(event::QUIT);
-	pevents.emplace(event::QUIT);
+	quit_event q = { };
+	scene.emplace(q);
+	pevents.emplace(q);
 	camera.join();
 	physics.join();
 
