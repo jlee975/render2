@@ -20,6 +20,10 @@ struct update_positions_event
 struct quit_event
 {
 };
+struct render_event
+{
+	std::vector< point > posns;
+};
 
 class event
 {
@@ -29,7 +33,8 @@ public:
 		UPDATE_TIME,
 		UPDATE_POSITIONS,
 		QUIT,
-		CREATE_OBJECT
+		CREATE_OBJECT,
+		RENDER
 	};
 
 	event() : type_(NOEVENT){ }
@@ -54,6 +59,11 @@ public:
 	explicit event(quit_event e) : type_(QUIT)
 	{
 		new (&u.quit) quit_event(std::move(e));
+	}
+
+	explicit event(render_event e) : type_(RENDER)
+	{
+		new (&u.render) render_event(std::move(e));
 	}
 
 	~event()
@@ -89,6 +99,11 @@ public:
 		return u.quit;
 	}
 
+	render_event& get_render()
+	{
+		return u.render;
+	}
+
 private:
 	union storage
 	{
@@ -98,6 +113,7 @@ private:
 		create_object_event create_object;
 		update_positions_event update_positions;
 		quit_event quit;
+		render_event render;
 	};
 
 	void destroy()
@@ -117,6 +133,9 @@ private:
 			break;
 		case CREATE_OBJECT:
 			u.create_object.~create_object_event();
+			break;
+		case RENDER:
+			u.render.~render_event();
 			break;
 		}
 		type_ = NOEVENT;

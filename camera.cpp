@@ -10,8 +10,10 @@ void do_camera(event_queue& events, event_queue& render)
 		switch (e.type())
 		{
 		case event::UPDATE_POSITIONS:
-			/// @todo Move the event with a splice-like function
-			render.emplace(e.get_update_positions());
+		{
+			render_event re = { std::move(e.get_update_positions().posns) };
+			render.emplace(re);
+		}
 			break;
 		case event::QUIT:
 			run = false;

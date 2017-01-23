@@ -34,9 +34,9 @@ int main()
 		event& e = render.front();
 		switch (e.type())
 		{
-		case event::UPDATE_POSITIONS:
+		case event::RENDER:
 		{
-			update_positions_event& u = e.get_update_positions();
+			render_event& u = e.get_render();
 
 			for (std::size_t i = 0, n = u.posns.size(); i < n; ++i)
 			{

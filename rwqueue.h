@@ -7,6 +7,7 @@
 // A single-produce, single-consumer queue
 /// @todo Make lock-free
 /// @todo Different mutex for head and tail
+/// @todo Ring buffer to avoid news
 template< typename T >
 class rwqueue
 {
