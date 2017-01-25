@@ -3,10 +3,12 @@
 
 #include "event_queue.h"
 
+class Render;
+
 class Camera
 {
 public:
-	explicit Camera(event_queue& render_);
+	explicit Camera(Render& render_);
 	void exec();
 
 	template< typename... Args >
@@ -17,7 +19,7 @@ public:
 
 private:
 	event_queue  events;
-	event_queue& render;
+	Render& render;
 };
 
 #endif // CAMERA_H

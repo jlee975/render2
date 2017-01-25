@@ -1,6 +1,8 @@
 #include "camera.h"
 
-Camera::Camera(event_queue& render_) : render(render_)
+#include "render.h"
+
+Camera::Camera(Render& render_) : render(render_)
 {
 
 }

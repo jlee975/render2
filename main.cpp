@@ -4,10 +4,11 @@
 
 #include "physics.h"
 #include "camera.h"
+#include "render.h"
 
 int main()
 {
-	event_queue render;
+	Render render;
 	Camera      camera(render);
 	Physics     physics(camera);
 
@@ -24,34 +25,7 @@ int main()
 		}
 	}
 
-	for ( double t = 0; t < 10; t += 1. / 64 )
-	{
-		const update_time_event x = { t };
-
-		physics.emplace(x);
-
-		render.wait();
-		event& e = render.front();
-
-		switch ( e.type())
-		{
-		case event::RENDER:
-		{
-			render_event& u = e.get_render();
-
-			for ( std::size_t i = 0, n = u.posns.size(); i < n; ++i )
-			{
-				std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << std::endl;
-			}
-		}
-		break;
-		}
-
-		render.pop();
-
-// std::this_thread::sleep_for(std::chrono::milliseconds(16));
-	}
-
+	render.exec(physics, camera);
 	quit_event q = {};
 	camera.emplace(q);
 	physics.emplace(q);
