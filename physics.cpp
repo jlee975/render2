@@ -2,13 +2,6 @@
 
 #include <vector>
 
-#include "camera.h"
-
-Physics::Physics(Camera& camera_) : camera(camera_)
-{
-
-}
-
 bool Physics::exec_inner(event& e)
 {
 	switch ( e.type())
@@ -23,7 +16,7 @@ bool Physics::exec_inner(event& e)
 			uppos.posns.push_back(objects[i].pos + ( u.time - objects[i].time ) * objects[i].vel);
 		}
 
-		camera.emplace(std::move(uppos));
+		notify(std::move(uppos));
 	}
 	break;
 	case event::QUIT:

@@ -9,8 +9,12 @@
 int main()
 {
 	Render  render;
-	Camera  camera(render);
-	Physics physics(camera);
+	Camera  camera;
+	Physics physics;
+
+	Worker::connect(&physics, &camera, event::UPDATE_POSITIONS);
+	Worker::connect(&camera, &render, event::RENDER);
+	Worker::connect(&render, &physics, event::UPDATE_TIME);
 
 	std::thread physics_thread(&Physics::exec, &physics);
 	std::thread camera_thread(&Camera::exec, &camera);
@@ -25,7 +29,9 @@ int main()
 		}
 	}
 
-	render.exec(physics);
+	physics.emplace(update_time_event{0});
+
+	render.exec();
 	camera.quit();
 	physics.quit();
 	camera_thread.join();

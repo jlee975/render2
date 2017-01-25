@@ -2,11 +2,6 @@
 
 #include "render.h"
 
-Camera::Camera(Render& render_) : render(render_)
-{
-
-}
-
 bool Camera::exec_inner(event& e)
 {
 	switch ( e.type())
@@ -14,8 +9,7 @@ bool Camera::exec_inner(event& e)
 	case event::UPDATE_POSITIONS:
 	{
 		update_positions_event& up = e.get_update_positions();
-		render_event re = { up.time, std::move(up.posns) };
-		render.emplace(std::move(re));
+		notify(render_event{ up.time, std::move(up.posns) });
 	}
 	break;
 	case event::QUIT:

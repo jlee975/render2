@@ -1,25 +1,16 @@
 #ifndef RENDER_H
 #define RENDER_H
 
-#include "event_queue.h"
+#include "worker.h"
 
-class Physics;
-class Camera;
-
-class Render
+class Render : public Worker
 {
 public:
-	template< typename... Args >
-	void emplace(Args&& ... args)
-	{
-		events.emplace(std::forward< Args >(args) ...);
-	}
-
-	void exec(Physics& physics);
+	Render();
 private:
 	bool exec_inner(event&);
 
-	event_queue events;
+	double time;
 };
 
 

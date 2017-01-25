@@ -3,17 +3,14 @@
 
 #include "worker.h"
 
-class Camera;
-
 class Physics : public Worker
 {
 public:
-	explicit Physics(Camera& camera_);
+	Physics() = default;
 
 private:
 	bool exec_inner(event&);
 
-	Camera&            camera;
 	std::vector< obj > objects;
 };
 

@@ -4,28 +4,9 @@
 
 #include "physics.h"
 
-void Render::exec(Physics& physics)
+Render::Render() : time(0)
 {
-	double t = 0;
-	physics.emplace(update_time_event{t});
 
-	bool run = true;
-
-	while (run)
-	{
-		events.wait();
-
-		/// @todo Better predicition
-		t += 1./64;
-		physics.emplace(update_time_event{t});
-
-		run = exec_inner(events.front());
-
-		if (t > 10)
-			run = false;
-
-		events.pop();
-	}
 }
 
 bool Render::exec_inner(event& e)
@@ -40,6 +21,12 @@ bool Render::exec_inner(event& e)
 		{
 			std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << "\n";
 		}
+
+		const double t1 = u.time + 1./64;
+		if (t1 > 10)
+			return false;
+
+		notify(update_time_event{t1});
 	}
 	break;
 	default:
