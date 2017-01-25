@@ -6,7 +6,8 @@ CONFIG -= qt
 SOURCES += main.cpp \
     camera.cpp \
     physics.cpp \
-    render.cpp
+    render.cpp \
+    worker.cpp
 
 DISTFILES += \
     branches.txt
@@ -21,4 +22,5 @@ HEADERS += \
     config.h \
     geo/vector.h \
     event_queue.h \
-    render.h
+    render.h \
+    worker.h

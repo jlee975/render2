@@ -7,20 +7,6 @@ Camera::Camera(Render& render_) : render(render_)
 
 }
 
-void Camera::exec()
-{
-	bool run = true;
-
-	while ( run )
-	{
-		events.wait();
-
-		run = exec_inner(events.front());
-
-		events.pop();
-	}
-}
-
 bool Camera::exec_inner(event& e)
 {
 	switch ( e.type())

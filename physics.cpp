@@ -9,21 +9,6 @@ Physics::Physics(Camera& camera_) : camera(camera_)
 
 }
 
-void Physics::exec()
-{
-	bool run = true;
-
-	while ( run )
-	{
-		// Read time, push new positions,etc to cameras
-		events.wait();
-
-		run = exec_inner(events.front());
-
-		events.pop();
-	}
-}
-
 bool Physics::exec_inner(event& e)
 {
 	switch ( e.type())
