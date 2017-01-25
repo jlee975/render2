@@ -12,13 +12,14 @@ public:
 	void exec();
 
 	template< typename... Args >
-	void emplace(Args&&... args)
+	void emplace(Args&& ... args)
 	{
-		events.emplace(std::forward< Args >(args)...);
+		events.emplace(std::forward< Args >(args) ...);
 	}
+
 private:
-	event_queue events;
-	Camera& camera;
+	event_queue        events;
+	Camera&            camera;
 	std::vector< obj > objects;
 };
 

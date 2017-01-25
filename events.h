@@ -28,7 +28,8 @@ struct render_event
 class event
 {
 public:
-	enum event_type {
+	enum event_type
+	{
 		NOEVENT,
 		UPDATE_TIME,
 		UPDATE_POSITIONS,
@@ -37,33 +38,36 @@ public:
 		RENDER
 	};
 
-	event() : type_(NOEVENT){ }
+	event() : type_(NOEVENT)
+	{
+	}
+
 	event(const event&) = delete;
-	event(event&&) = delete;
+	event(event&&)      = delete;
 
 	explicit event(update_time_event e) : type_(UPDATE_TIME)
 	{
-		new (&u.update_time) update_time_event(std::move(e));
+		new( &u.update_time )update_time_event(std::move(e));
 	}
 
 	explicit event(create_object_event e) : type_(CREATE_OBJECT)
 	{
-		new (&u.create_object) create_object_event(std::move(e));
+		new( &u.create_object )create_object_event(std::move(e));
 	}
 
 	explicit event(update_positions_event e) : type_(UPDATE_POSITIONS)
 	{
-		new (&u.update_positions) update_positions_event(std::move(e));
+		new( &u.update_positions )update_positions_event(std::move(e));
 	}
 
 	explicit event(quit_event e) : type_(QUIT)
 	{
-		new (&u.quit) quit_event(std::move(e));
+		new( &u.quit )quit_event(std::move(e));
 	}
 
 	explicit event(render_event e) : type_(RENDER)
 	{
-		new (&u.render) render_event(std::move(e));
+		new( &u.render )render_event(std::move(e));
 	}
 
 	~event()
@@ -72,7 +76,7 @@ public:
 	}
 
 	event& operator=(const event&) = delete;
-	event& operator=(event&&) = delete;
+	event& operator=(event&&)      = delete;
 
 	event_type type() const
 	{
@@ -107,8 +111,12 @@ public:
 private:
 	union storage
 	{
-		storage() { }
-		~storage() { }
+		storage()
+		{
+		}
+		~storage()
+		{
+		}
 		update_time_event update_time;
 		create_object_event create_object;
 		update_positions_event update_positions;
@@ -118,7 +126,7 @@ private:
 
 	void destroy()
 	{
-		switch(type_)
+		switch ( type_ )
 		{
 		case NOEVENT:
 			break;
@@ -138,6 +146,7 @@ private:
 			u.render.~render_event();
 			break;
 		}
+
 		type_ = NOEVENT;
 	}
 

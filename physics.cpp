@@ -11,26 +11,28 @@ Physics::Physics(Camera& camera_) : camera(camera_)
 
 void Physics::exec()
 {
-	for (bool run = true; run; )
+	for ( bool run = true; run;)
 	{
 		// Read time, push new positions,etc to cameras
 		events.wait();
 
 		event& e = events.front();
-		switch (e.type())
+
+		switch ( e.type())
 		{
 		case event::UPDATE_TIME:
 		{
-			update_time_event& u = e.get_update_time();
+			update_time_event&     u = e.get_update_time();
 			update_positions_event uppos;
-			for (std::size_t i = 0, n = objects.size(); i < n; ++i)
+
+			for ( std::size_t i = 0, n = objects.size(); i < n; ++i )
 			{
-				uppos.posns.push_back(objects[i].pos + (u.time - objects[i].time) * objects[i].vel);
+				uppos.posns.push_back(objects[i].pos + ( u.time - objects[i].time ) * objects[i].vel);
 			}
 
 			camera.emplace(std::move(uppos));
 		}
-			break;
+		break;
 		case event::QUIT:
 			run = false;
 			break;
@@ -39,9 +41,9 @@ void Physics::exec()
 			create_object_event& u = e.get_create_object();
 			objects.push_back(u.o);
 		}
-			break;
-		}
+		break;
+		} // switch
+
 		events.pop();
 	}
 }
-

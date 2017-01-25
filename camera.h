@@ -10,12 +10,13 @@ public:
 	void exec();
 
 	template< typename... Args >
-	void emplace(Args&&... args)
+	void emplace(Args&& ... args)
 	{
-		events.emplace(std::forward< Args >(args)...);
+		events.emplace(std::forward< Args >(args) ...);
 	}
+
 private:
-	event_queue events;
+	event_queue  events;
 	event_queue& render;
 };
 

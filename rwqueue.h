@@ -14,18 +14,21 @@ class rwqueue
 public:
 	typedef T value_type;
 
-	rwqueue() : head(nullptr), tail(nullptr) { }
+	rwqueue() : head(nullptr), tail(nullptr)
+	{
+	}
 
-	rwqueue(const rwqueue&) = delete;
-	rwqueue(rwqueue&&) = delete;
+	rwqueue(const rwqueue&)            = delete;
+	rwqueue(rwqueue&&)                 = delete;
 	rwqueue& operator=(const rwqueue&) = delete;
-	rwqueue& operator=(rwqueue&&) = delete;
+	rwqueue& operator=(rwqueue&&)      = delete;
 
 	~rwqueue()
 	{
 		std::unique_lock< std::mutex > lk(mut);
-		item* t = head;
-		while (t != nullptr)
+		item*                          t = head;
+
+		while ( t != nullptr )
 		{
 			item* next = t->next;
 			delete t;
@@ -40,16 +43,17 @@ public:
 	}
 
 	template< typename... Args >
-	void emplace(Args&&... args)
+	void emplace(Args&& ... args)
 	{
-		append(new item(std::forward< Args >(args)...));
+		append(new item(std::forward< Args >(args) ...));
 	}
 
 	/// @todo Don't think we need to lock if head is not null
 	void wait()
 	{
 		std::unique_lock< std::mutex > lk(mut);
-		while (head == nullptr)
+
+		while ( head == nullptr )
 		{
 			cv.wait(lk);
 		}
@@ -70,10 +74,12 @@ public:
 		item* t = nullptr;
 		{
 			std::unique_lock< std::mutex > lk(mut);
-			if (head != nullptr)
+
+			if ( head != nullptr )
 			{
 				t = head;
-				if (t->next != nullptr)
+
+				if ( t->next != nullptr )
 				{
 					head = t->next;
 				}
@@ -84,6 +90,7 @@ public:
 				}
 			}
 		}
+
 		delete t;
 	}
 
@@ -91,7 +98,7 @@ private:
 	struct item
 	{
 		template< typename... Args >
-		item(Args&&... args) : next(nullptr), value(std::forward< Args >(args)...)
+		item(Args&& ... args) : next(nullptr), value(std::forward< Args >(args) ...)
 		{
 		}
 
@@ -103,7 +110,7 @@ private:
 	{
 		std::unique_lock< std::mutex > lk(mut);
 
-		if (tail)
+		if ( tail )
 		{
 			tail->next = p;
 		}
@@ -111,12 +118,13 @@ private:
 		{
 			head = p;
 		}
+
 		tail = p;
 		lk.unlock();
 		cv.notify_one();
 	}
 
-	std::mutex mut;
+	std::mutex              mut;
 	std::condition_variable cv;
 
 	item* head;
