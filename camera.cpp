@@ -27,8 +27,9 @@ bool Camera::exec_inner(event& e)
 	{
 	case event::UPDATE_POSITIONS:
 	{
-		render_event re = { std::move(e.get_update_positions().posns) };
-		render.emplace(re);
+		update_positions_event& up = e.get_update_positions();
+		render_event re = { up.time, std::move(up.posns) };
+		render.emplace(std::move(re));
 	}
 	break;
 	case event::QUIT:

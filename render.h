@@ -2,6 +2,7 @@
 #define RENDER_H
 
 #include "event_queue.h"
+
 class Physics;
 class Camera;
 

@@ -31,7 +31,7 @@ bool Physics::exec_inner(event& e)
 	case event::UPDATE_TIME:
 	{
 		update_time_event&     u = e.get_update_time();
-		update_positions_event uppos;
+		update_positions_event uppos = { u.time, { } };
 
 		for ( std::size_t i = 0, n = objects.size(); i < n; ++i )
 		{

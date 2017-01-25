@@ -15,6 +15,7 @@ struct create_object_event
 };
 struct update_positions_event
 {
+	double time;
 	std::vector< point > posns;
 };
 struct quit_event
@@ -22,6 +23,7 @@ struct quit_event
 };
 struct render_event
 {
+	double time;
 	std::vector< point > posns;
 };
 

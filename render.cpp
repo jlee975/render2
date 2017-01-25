@@ -6,14 +6,23 @@
 
 void Render::exec(Physics& physics)
 {
-	for ( double t = 0; t < 10; t += 1. / 64 )
+	double t = 0;
+	physics.emplace(update_time_event{t});
+
+	bool run = true;
+
+	while (run)
 	{
-		const update_time_event x = { t };
-
-		physics.emplace(x);
-
 		events.wait();
-		exec_inner(events.front());
+
+		/// @todo Better predicition
+		t += 1./64;
+		physics.emplace(update_time_event{t});
+
+		run = exec_inner(events.front());
+
+		if (t > 10)
+			run = false;
 
 		events.pop();
 	}
@@ -29,7 +38,7 @@ bool Render::exec_inner(event& e)
 
 		for ( std::size_t i = 0, n = u.posns.size(); i < n; ++i )
 		{
-			std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << std::endl;
+			std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << "\n";
 		}
 	}
 	break;
