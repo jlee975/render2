@@ -17,7 +17,14 @@ public:
 		events.emplace(std::forward< Args >(args) ...);
 	}
 
+	void quit()
+	{
+		events.emplace(quit_event{});
+	}
+
 private:
+	bool exec_inner(event&);
+
 	event_queue  events;
 	Render& render;
 };

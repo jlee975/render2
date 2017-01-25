@@ -25,10 +25,9 @@ int main()
 		}
 	}
 
-	render.exec(physics, camera);
-	quit_event q = {};
-	camera.emplace(q);
-	physics.emplace(q);
+	render.exec(physics);
+	camera.quit();
+	physics.quit();
 	camera_thread.join();
 	physics_thread.join();
 

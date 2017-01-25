@@ -4,7 +4,7 @@
 
 #include "physics.h"
 
-void Render::exec(Physics& physics, Camera& camera)
+void Render::exec(Physics& physics)
 {
 	for ( double t = 0; t < 10; t += 1. / 64 )
 	{
@@ -13,24 +13,28 @@ void Render::exec(Physics& physics, Camera& camera)
 		physics.emplace(x);
 
 		events.wait();
-		event& e = events.front();
-
-		switch ( e.type())
-		{
-		case event::RENDER:
-		{
-			render_event& u = e.get_render();
-
-			for ( std::size_t i = 0, n = u.posns.size(); i < n; ++i )
-			{
-				std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << std::endl;
-			}
-		}
-			break;
-		}
+		exec_inner(events.front());
 
 		events.pop();
-
-		// std::this_thread::sleep_for(std::chrono::milliseconds(16));
 	}
+}
+
+bool Render::exec_inner(event& e)
+{
+	switch ( e.type())
+	{
+	case event::RENDER:
+	{
+		render_event& u = e.get_render();
+
+		for ( std::size_t i = 0, n = u.posns.size(); i < n; ++i )
+		{
+			std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << std::endl;
+		}
+	}
+		break;
+	default:
+		break;
+	}
+	return true;
 }

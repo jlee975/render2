@@ -14,9 +14,11 @@ public:
 		events.emplace(std::forward< Args >(args) ...);
 	}
 
-	void exec(Physics& physics, Camera& camera);
+	void exec(Physics& physics);
 
 private:
+	bool exec_inner(event&);
+
 	event_queue events;
 };
 
