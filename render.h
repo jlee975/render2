@@ -15,7 +15,6 @@ public:
 	}
 
 	void exec(Physics& physics);
-
 private:
 	bool exec_inner(event&);
 

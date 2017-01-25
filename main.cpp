@@ -8,9 +8,9 @@
 
 int main()
 {
-	Render render;
-	Camera      camera(render);
-	Physics     physics(camera);
+	Render  render;
+	Camera  camera(render);
+	Physics physics(camera);
 
 	std::thread physics_thread(&Physics::exec, &physics);
 	std::thread camera_thread(&Camera::exec, &camera);

@@ -32,9 +32,10 @@ bool Render::exec_inner(event& e)
 			std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << std::endl;
 		}
 	}
-		break;
+	break;
 	default:
 		break;
 	}
+
 	return true;
 }

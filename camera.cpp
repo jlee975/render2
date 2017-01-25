@@ -10,7 +10,8 @@ Camera::Camera(Render& render_) : render(render_)
 void Camera::exec()
 {
 	bool run = true;
-	while (run)
+
+	while ( run )
 	{
 		events.wait();
 
@@ -32,6 +33,7 @@ bool Camera::exec_inner(event& e)
 	break;
 	case event::QUIT:
 		return false;
+
 	default:
 		break;
 	}

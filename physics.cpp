@@ -12,7 +12,8 @@ Physics::Physics(Camera& camera_) : camera(camera_)
 void Physics::exec()
 {
 	bool run = true;
-	while (run)
+
+	while ( run )
 	{
 		// Read time, push new positions,etc to cameras
 		events.wait();
@@ -23,7 +24,7 @@ void Physics::exec()
 	}
 }
 
-bool Physics::exec_inner(event & e)
+bool Physics::exec_inner(event& e)
 {
 	switch ( e.type())
 	{
@@ -42,6 +43,7 @@ bool Physics::exec_inner(event & e)
 	break;
 	case event::QUIT:
 		return false;
+
 	case event::CREATE_OBJECT:
 	{
 		create_object_event& u = e.get_create_object();

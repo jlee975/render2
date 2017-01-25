@@ -19,14 +19,15 @@ public:
 
 	void quit()
 	{
-		events.emplace(quit_event{});
+		events.emplace(quit_event{}
+		);
 	}
 
 private:
 	bool exec_inner(event&);
 
-	event_queue  events;
-	Render& render;
+	event_queue events;
+	Render&     render;
 };
 
 #endif // CAMERA_H

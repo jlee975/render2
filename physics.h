@@ -19,7 +19,8 @@ public:
 
 	void quit()
 	{
-		events.emplace(quit_event{});
+		events.emplace(quit_event{}
+		);
 	}
 
 private:
