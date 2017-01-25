@@ -1,6 +1,11 @@
 #include "camera.h"
 
-void do_camera(event_queue& events, event_queue& render)
+Camera::Camera(event_queue& render_) : render(render_)
+{
+
+}
+
+void Camera::exec()
 {
 	for (bool run = true; run; )
 	{
@@ -23,4 +28,5 @@ void do_camera(event_queue& events, event_queue& render)
 		events.pop();
 	}
 }
+
 

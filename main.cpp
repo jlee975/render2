@@ -7,12 +7,12 @@
 
 int main()
 {
-	event_queue pevents;
-	event_queue scene;
 	event_queue render;
+	Camera camera(render);
+	Physics physics(camera);
 
-	std::thread physics(do_physics, std::ref(pevents), std::ref(scene));
-	std::thread camera(do_camera, std::ref(scene), std::ref(render));
+	std::thread physics_thread(&Physics::exec, &physics);
+	std::thread camera_thread(&Camera::exec, &camera);
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -20,15 +20,15 @@ int main()
 		{
 			const create_object_event e = { { 0, { i, j, 0 }, { 1, 0, 0 } } };
 
-			pevents.emplace(e);
+			physics.emplace(e);
 		}
 	}
 
-	for (double t = 0; t < 10; t += 1./60)
+	for (double t = 0; t < 10; t += 1./64)
 	{
 		const update_time_event x = { t };
 
-		pevents.emplace(x);
+		physics.emplace(x);
 
 		render.wait();
 		event& e = render.front();
@@ -51,10 +51,10 @@ int main()
 	}
 
 	quit_event q = { };
-	scene.emplace(q);
-	pevents.emplace(q);
-	camera.join();
-	physics.join();
+	camera.emplace(q);
+	physics.emplace(q);
+	camera_thread.join();
+	physics_thread.join();
 
 	return 0;
 }

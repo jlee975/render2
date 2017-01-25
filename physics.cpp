@@ -2,16 +2,21 @@
 
 #include <vector>
 
-void do_physics(event_queue& pevents, event_queue& scene)
-{
-	std::vector< obj > objects;
+#include "camera.h"
 
+Physics::Physics(Camera& camera_) : camera(camera_)
+{
+
+}
+
+void Physics::exec()
+{
 	for (bool run = true; run; )
 	{
 		// Read time, push new positions,etc to cameras
-		pevents.wait();
+		events.wait();
 
-		event& e = pevents.front();
+		event& e = events.front();
 		switch (e.type())
 		{
 		case event::UPDATE_TIME:
@@ -23,7 +28,7 @@ void do_physics(event_queue& pevents, event_queue& scene)
 				uppos.posns.push_back(objects[i].pos + (u.time - objects[i].time) * objects[i].vel);
 			}
 
-			scene.emplace(std::move(uppos));
+			camera.emplace(std::move(uppos));
 		}
 			break;
 		case event::QUIT:
@@ -36,6 +41,7 @@ void do_physics(event_queue& pevents, event_queue& scene)
 		}
 			break;
 		}
-		pevents.pop();
+		events.pop();
 	}
 }
+
