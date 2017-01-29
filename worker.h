@@ -11,53 +11,66 @@ public:
 
 	void exec();
 
-	template< typename... Args >
-	void emplace(Args&& ... args)
+	template< typename T >
+	void push(T&& arg)
 	{
-		events.emplace(std::forward< Args >(args) ...);
+		events.push(std::forward< T >(arg));
 	}
 
 	void quit();
 
-	static void connect(Worker*, Worker*, event::event_type);
+	static void connect(Worker*, Worker*, event_type);
 protected:
 	/// @todo Template
 	void notify(update_positions_event&& e)
 	{
-		auto range = observers.equal_range(event::UPDATE_POSITIONS);
+		auto range = observers.equal_range(UPDATE_POSITIONS);
 		for (auto it = range.first; it != range.second; ++it)
 		{
 			/// @todo If only one match, move the object
-			it->second->emplace(e);
+			it->second->push(e);
 		}
 	}
 
 	void notify(update_time_event&& e)
 	{
-		auto range = observers.equal_range(event::UPDATE_TIME);
+		auto range = observers.equal_range(UPDATE_TIME);
 		for (auto it = range.first; it != range.second; ++it)
 		{
 			/// @todo If only one match, move the object
-			it->second->emplace(e);
+			it->second->push(e);
 		}
 	}
 
 	void notify(render_event&& e)
 	{
-		auto range = observers.equal_range(event::RENDER);
+		auto range = observers.equal_range(RENDER);
 		for (auto it = range.first; it != range.second; ++it)
 		{
 			/// @todo If only one match, move the object
-			it->second->emplace(e);
+			it->second->push(e);
 		}
 	}
 
+	event_type get_event_type() const;
+
+	template< typename T >
+	T& get()
+	{
+		return events.front< T>();
+	}
+
+	template< typename T >
+	const T& get() const
+	{
+		return events.front< T>();
+	}
 private:
-	virtual bool exec_inner(event&);
+	virtual bool exec_inner();
 
 	event_queue        events;
 
-	std::multimap< event::event_type, Worker* > observers;
+	std::multimap< event_type, Worker* > observers;
 };
 
 #endif // WORKER_H

@@ -12,9 +12,9 @@ int main()
 	Camera  camera;
 	Physics physics;
 
-	Worker::connect(&physics, &camera, event::UPDATE_POSITIONS);
-	Worker::connect(&camera, &render, event::RENDER);
-	Worker::connect(&render, &physics, event::UPDATE_TIME);
+	Worker::connect(&physics, &camera, UPDATE_POSITIONS);
+	Worker::connect(&camera, &render, RENDER);
+	Worker::connect(&render, &physics, UPDATE_TIME);
 
 	std::thread physics_thread(&Physics::exec, &physics);
 	std::thread camera_thread(&Camera::exec, &camera);
@@ -25,11 +25,11 @@ int main()
 		{
 			const create_object_event e = { { 0, { i, j, 0 }, { 1, 0, 0 } } };
 
-			physics.emplace(e);
+			physics.push(e);
 		}
 	}
 
-	physics.emplace(update_time_event{0});
+	physics.push(update_time_event{0});
 
 	render.exec();
 	camera.quit();

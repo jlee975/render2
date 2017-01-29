@@ -9,7 +9,7 @@ public:
 	Physics() = default;
 
 private:
-	bool exec_inner(event&);
+	bool exec_inner();
 
 	std::vector< obj > objects;
 };

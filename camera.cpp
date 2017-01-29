@@ -2,17 +2,17 @@
 
 #include "render.h"
 
-bool Camera::exec_inner(event& e)
+bool Camera::exec_inner()
 {
-	switch ( e.type())
+	switch ( get_event_type())
 	{
-	case event::UPDATE_POSITIONS:
+	case UPDATE_POSITIONS:
 	{
-		update_positions_event& up = e.get_update_positions();
+		update_positions_event& up = get< update_positions_event >();
 		notify(render_event{ up.time, std::move(up.posns) });
 	}
 	break;
-	case event::QUIT:
+	case QUIT:
 		return false;
 
 	default:

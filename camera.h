@@ -9,7 +9,7 @@ class Camera : public Worker
 {
 public:
 private:
-	bool exec_inner(event&);
+	bool exec_inner();
 };
 
 #endif // CAMERA_H

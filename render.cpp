@@ -9,13 +9,13 @@ Render::Render() : time(0)
 
 }
 
-bool Render::exec_inner(event& e)
+bool Render::exec_inner()
 {
-	switch ( e.type())
+	switch ( get_event_type())
 	{
-	case event::RENDER:
+	case RENDER:
 	{
-		render_event& u = e.get_render();
+		render_event& u = get< render_event >();
 
 		for ( std::size_t i = 0, n = u.posns.size(); i < n; ++i )
 		{

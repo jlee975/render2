@@ -8,7 +8,7 @@ class Render : public Worker
 public:
 	Render();
 private:
-	bool exec_inner(event&);
+	bool exec_inner();
 
 	double time;
 };
