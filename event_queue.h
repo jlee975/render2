@@ -9,7 +9,6 @@
 
 enum event_type
 {
-	NOEVENT,
 	UPDATE_TIME,
 	UPDATE_POSITIONS,
 	QUIT,
