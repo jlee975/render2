@@ -9,8 +9,7 @@ bool Camera::exec_inner(event_type e)
 	case UPDATE_POSITIONS:
 	{
 		update_positions_event& up = get< UPDATE_POSITIONS >();
-		notify(render_event{ up.time, std::move(up.posns) }
-		);
+		notify(render_event{ up.time, std::move(up.posns) });
 	}
 	break;
 	case QUIT:

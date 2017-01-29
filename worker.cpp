@@ -17,8 +17,7 @@ void Worker::exec()
 
 void Worker::quit()
 {
-	events.push(quit_event{}
-	);
+	events.push(quit_event{});
 }
 
 void Worker::connect(

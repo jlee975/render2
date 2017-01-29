@@ -29,8 +29,7 @@ bool Render::exec_inner(event_type e)
 			return false;
 		}
 
-		notify(update_time_event{ t1 }
-		);
+		notify(update_time_event{ t1 });
 	}
 	break;
 	default:

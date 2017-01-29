@@ -29,8 +29,7 @@ int main()
 		}
 	}
 
-	physics.push(update_time_event{ 0 }
-	);
+	physics.push(update_time_event{ 0 });
 
 	render.exec();
 	camera.quit();
