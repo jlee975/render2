@@ -17,8 +17,6 @@ LIBS += -pthread
 HEADERS += \
     camera.h \
     physics.h \
-    events.h \
-    rwqueue.h \
     config.h \
     geo/vector.h \
     event_queue.h \
