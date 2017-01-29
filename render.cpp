@@ -11,7 +11,7 @@ Render::Render() : time(0)
 
 bool Render::exec_inner(event_type e)
 {
-	switch ( e)
+	switch ( e )
 	{
 	case RENDER:
 	{
@@ -22,16 +22,20 @@ bool Render::exec_inner(event_type e)
 			std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << "\n";
 		}
 
-		const double t1 = u.time + 1./64;
-		if (t1 > 10)
-			return false;
+		const double t1 = u.time + 1. / 64;
 
-		notify(update_time_event{t1});
+		if ( t1 > 10 )
+		{
+			return false;
+		}
+
+		notify(update_time_event{ t1 }
+		);
 	}
 	break;
 	default:
 		break;
-	}
+	} // switch
 
 	return true;
 }

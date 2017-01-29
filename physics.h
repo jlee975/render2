@@ -7,7 +7,6 @@ class Physics : public Worker
 {
 public:
 	Physics() = default;
-
 private:
 	bool exec_inner(event_type);
 

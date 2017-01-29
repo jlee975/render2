@@ -20,7 +20,7 @@ enum event_type
 template< event_type E >
 struct event;
 
-template<>
+template< >
 struct event< UPDATE_TIME >
 {
 	double time;
@@ -28,15 +28,15 @@ struct event< UPDATE_TIME >
 
 using update_time_event = event< UPDATE_TIME >;
 
-template<>
-struct event<CREATE_OBJECT>
+template< >
+struct event< CREATE_OBJECT >
 {
 	obj o;
 };
 
 using create_object_event = event< CREATE_OBJECT >;
 
-template<>
+template< >
 struct event< UPDATE_POSITIONS >
 {
 	double time;
@@ -90,15 +90,15 @@ public:
 	}
 
 	template< event_type T >
-	void push(event<T>&& x)
+	void push(event< T >&& x)
 	{
-		append(new itemt<T>(std::move(x)));
+		append(new itemt< T >(std::move(x)));
 	}
 
 	template< event_type T >
-	void push(const event<T>& x)
+	void push(const event< T >& x)
 	{
-		append(new itemt<T>(x));
+		append(new itemt< T >(x));
 	}
 
 	/// @todo Don't think we need to lock if head is not null
@@ -113,15 +113,15 @@ public:
 	}
 
 	template< event_type T >
-	event< T> & front()
+	event< T >& front()
 	{
-		return static_cast< itemt<T>* >(head)->value;
+		return static_cast< itemt< T >* >( head )->value;
 	}
 
 	template< event_type T >
-	const event<T>& front() const
+	const event< T >& front() const
 	{
-		return static_cast< itemt<T>* >(head)->value;
+		return static_cast< itemt< T >* >( head )->value;
 	}
 
 	void pop()
@@ -157,8 +157,13 @@ public:
 private:
 	struct item
 	{
-		explicit item(event_type t) : type(t), next(nullptr) { }
-		virtual ~item() { }
+		explicit item(event_type t) : type(t), next(nullptr)
+		{
+		}
+
+		virtual ~item()
+		{
+		}
 
 		event_type type;
 		item* next;
@@ -167,7 +172,10 @@ private:
 	template< event_type T >
 	struct itemt : item
 	{
-		itemt(event< T > x) : item(T), value(x) { }
+		itemt(event< T > x) : item(T), value(x)
+		{
+		}
+
 		event< T > value;
 	};
 

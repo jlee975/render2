@@ -15,13 +15,17 @@ void Worker::exec()
 	}
 }
 
-
 void Worker::quit()
 {
-	events.push(quit_event{});
+	events.push(quit_event{}
+	);
 }
 
-void Worker::connect(Worker* sender, Worker* observer, event_type type)
+void Worker::connect(
+	Worker*    sender,
+	Worker*    observer,
+	event_type type
+)
 {
 	sender->observers.at(type).push_back(observer);
 }
