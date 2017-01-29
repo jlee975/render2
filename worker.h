@@ -36,12 +36,15 @@ protected:
 
 		const std::size_t n = v.size();
 
-		for ( std::size_t i = 0; i + 1 < n; ++i )
+		if (n != 0)
 		{
-			v[i]->push(e);
-		}
+			for ( std::size_t i = 0; i + 1 < n; ++i )
+			{
+				v[i]->push(e);
+			}
 
-		v[n - 1]->push(std::move(e));
+			v[n - 1]->push(std::move(e));
+		}
 	}
 
 	template< event_type T >
