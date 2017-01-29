@@ -9,7 +9,7 @@ void Worker::exec()
 		// Read time, push new positions,etc to cameras
 		events.wait();
 
-		run = exec_inner();
+		run = exec_inner(events.type());
 
 		events.pop();
 	}
@@ -26,12 +26,7 @@ void Worker::connect(Worker* sender, Worker* observer, event_type type)
 	sender->observers.emplace(type, observer);
 }
 
-event_type Worker::get_event_type() const
-{
-	return events.type();
-}
-
-bool Worker::exec_inner()
+bool Worker::exec_inner(event_type)
 {
 	return false;
 }

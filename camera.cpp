@@ -2,9 +2,9 @@
 
 #include "render.h"
 
-bool Camera::exec_inner()
+bool Camera::exec_inner(event_type e)
 {
-	switch ( get_event_type())
+	switch ( e)
 	{
 	case UPDATE_POSITIONS:
 	{

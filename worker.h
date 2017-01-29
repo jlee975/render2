@@ -52,8 +52,6 @@ protected:
 		}
 	}
 
-	event_type get_event_type() const;
-
 	template< typename T >
 	T& get()
 	{
@@ -66,7 +64,7 @@ protected:
 		return events.front< T>();
 	}
 private:
-	virtual bool exec_inner();
+	virtual bool exec_inner(event_type);
 
 	event_queue        events;
 

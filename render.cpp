@@ -9,9 +9,9 @@ Render::Render() : time(0)
 
 }
 
-bool Render::exec_inner()
+bool Render::exec_inner(event_type e)
 {
-	switch ( get_event_type())
+	switch ( e)
 	{
 	case RENDER:
 	{

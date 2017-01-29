@@ -2,9 +2,9 @@
 
 #include <vector>
 
-bool Physics::exec_inner()
+bool Physics::exec_inner(event_type e)
 {
-	switch ( get_event_type())
+	switch ( e)
 	{
 	case UPDATE_TIME:
 	{
