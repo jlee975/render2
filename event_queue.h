@@ -13,7 +13,8 @@ enum event_type
 	UPDATE_POSITIONS,
 	QUIT,
 	CREATE_OBJECT,
-	RENDER
+	RENDER,
+	NUMBER_OF_EVENT_TYPES
 };
 
 template< event_type E >

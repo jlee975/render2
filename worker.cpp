@@ -23,7 +23,7 @@ void Worker::quit()
 
 void Worker::connect(Worker* sender, Worker* observer, event_type type)
 {
-	sender->observers.emplace(type, observer);
+	sender->observers.at(type).push_back(observer);
 }
 
 bool Worker::exec_inner(event_type)

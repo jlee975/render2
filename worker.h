@@ -30,12 +30,15 @@ protected:
 	template< event_type T >
 	void notify(event<T>&& e)
 	{
-		auto range = observers.equal_range(T);
-		for (auto it = range.first; it != range.second; ++it)
+		const std::vector< Worker* >& v = observers[T];
+
+		const std::size_t n = v.size();
+
+		for (std::size_t i = 0; i + 1 < n; ++i)
 		{
-			/// @todo If only one match, move the object
-			it->second->push(e);
+			v[i]->push(e);
 		}
+		v[n-1]->push(std::move(e));
 	}
 
 	template< event_type T >
@@ -54,7 +57,7 @@ private:
 
 	event_queue        events;
 
-	std::multimap< event_type, Worker* > observers;
+	std::array< std::vector< Worker* >, NUMBER_OF_EVENT_TYPES > observers;
 };
 
 #endif // WORKER_H
