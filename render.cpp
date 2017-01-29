@@ -15,7 +15,7 @@ bool Render::exec_inner(event_type e)
 	{
 	case RENDER:
 	{
-		render_event& u = get< render_event >();
+		render_event& u = get< RENDER >();
 
 		for ( std::size_t i = 0, n = u.posns.size(); i < n; ++i )
 		{

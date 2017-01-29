@@ -8,7 +8,7 @@ bool Physics::exec_inner(event_type e)
 	{
 	case UPDATE_TIME:
 	{
-		update_time_event&     u = get< update_time_event >();
+		update_time_event&     u = get< UPDATE_TIME >();
 		update_positions_event uppos = { u.time, { } };
 
 		for ( std::size_t i = 0, n = objects.size(); i < n; ++i )
@@ -24,7 +24,7 @@ bool Physics::exec_inner(event_type e)
 
 	case CREATE_OBJECT:
 	{
-		create_object_event& u = get<create_object_event >();
+		create_object_event& u = get<CREATE_OBJECT >();
 		objects.push_back(u.o);
 	}
 	break;

@@ -16,36 +16,48 @@ enum event_type
 	RENDER
 };
 
-struct update_time_event
+template< event_type E >
+struct event;
+
+template<>
+struct event< UPDATE_TIME >
 {
-	static const event_type type = UPDATE_TIME;
 	double time;
 };
 
-struct create_object_event
+using update_time_event = event< UPDATE_TIME >;
+
+template<>
+struct event<CREATE_OBJECT>
 {
-	static const event_type type = CREATE_OBJECT;
 	obj o;
 };
 
-struct update_positions_event
+using create_object_event = event< CREATE_OBJECT >;
+
+template<>
+struct event< UPDATE_POSITIONS >
 {
-	static const event_type type = UPDATE_POSITIONS;
+	double time;
+	std::vector< point > posns;
+};
+using update_positions_event = event< UPDATE_POSITIONS >;
+
+template< >
+struct event< QUIT >
+{
+};
+
+using quit_event = event< QUIT >;
+
+template< >
+struct event< RENDER >
+{
 	double time;
 	std::vector< point > posns;
 };
 
-struct quit_event
-{
-	static const event_type type = QUIT;
-};
-
-struct render_event
-{
-	static const event_type type = RENDER;
-	double time;
-	std::vector< point > posns;
-};
+using render_event = event< RENDER >;
 
 // A queue of "events" with a single consumer thread
 /// @todo Make lock-free
@@ -76,10 +88,16 @@ public:
 		}
 	}
 
-	template< typename T >
-	void push(T&& x)
+	template< event_type T >
+	void push(event<T>&& x)
 	{
-		append(new itemt<std::decay_t<T>>(std::forward< T >(x)));
+		append(new itemt<T>(std::move(x)));
+	}
+
+	template< event_type T >
+	void push(const event<T>& x)
+	{
+		append(new itemt<T>(x));
 	}
 
 	/// @todo Don't think we need to lock if head is not null
@@ -93,16 +111,16 @@ public:
 		}
 	}
 
-	template< typename T >
-	std::decay_t< T> & front()
+	template< event_type T >
+	event< T> & front()
 	{
-		return static_cast< itemt<std::decay_t<T>>* >(head)->value;
+		return static_cast< itemt<T>* >(head)->value;
 	}
 
-	template< typename T >
-	const std::decay_t<T>& front() const
+	template< event_type T >
+	const event<T>& front() const
 	{
-		return static_cast< itemt<std::decay_t<T>>* >(head)->value;
+		return static_cast< itemt<T>* >(head)->value;
 	}
 
 	void pop()
@@ -145,11 +163,11 @@ private:
 		item* next;
 	};
 
-	template< typename T >
+	template< event_type T >
 	struct itemt : item
 	{
-		itemt(T x) : item(T::type), value(x) { }
-		T value;
+		itemt(event< T > x) : item(T), value(x) { }
+		event< T > value;
 	};
 
 	void append(item* p)

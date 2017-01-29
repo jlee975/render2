@@ -11,20 +11,26 @@ public:
 
 	void exec();
 
-	template< typename T >
-	void push(T&& arg)
+	template< event_type T >
+	void push(event<T>&& arg)
 	{
-		events.push(std::forward< T >(arg));
+		events.push(std::move(arg));
+	}
+
+	template< event_type T >
+	void push(const event<T>& arg)
+	{
+		events.push(arg);
 	}
 
 	void quit();
 
 	static void connect(Worker*, Worker*, event_type);
 protected:
-	/// @todo Template
-	void notify(update_positions_event&& e)
+	template< event_type T >
+	void notify(event<T>&& e)
 	{
-		auto range = observers.equal_range(UPDATE_POSITIONS);
+		auto range = observers.equal_range(T);
 		for (auto it = range.first; it != range.second; ++it)
 		{
 			/// @todo If only one match, move the object
@@ -32,34 +38,14 @@ protected:
 		}
 	}
 
-	void notify(update_time_event&& e)
-	{
-		auto range = observers.equal_range(UPDATE_TIME);
-		for (auto it = range.first; it != range.second; ++it)
-		{
-			/// @todo If only one match, move the object
-			it->second->push(e);
-		}
-	}
-
-	void notify(render_event&& e)
-	{
-		auto range = observers.equal_range(RENDER);
-		for (auto it = range.first; it != range.second; ++it)
-		{
-			/// @todo If only one match, move the object
-			it->second->push(e);
-		}
-	}
-
-	template< typename T >
-	T& get()
+	template< event_type T >
+	event<T>& get()
 	{
 		return events.front< T>();
 	}
 
-	template< typename T >
-	const T& get() const
+	template< event_type T >
+	const event<T>& get() const
 	{
 		return events.front< T>();
 	}
