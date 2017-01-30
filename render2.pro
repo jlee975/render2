@@ -21,4 +21,5 @@ HEADERS += \
     geo/vector.h \
     event_queue.h \
     render.h \
-    worker.h
+    worker.h \
+    inplace.h

@@ -1,5 +1,10 @@
 #include "worker.h"
 
+Worker::Worker() :observers{nullptr}
+{
+
+}
+
 void Worker::exec()
 {
 	bool run = true;
@@ -26,7 +31,10 @@ void Worker::connect(
 	event_type type
 )
 {
-	sender->observers.at(type).push_back(observer);
+	if (sender->observers.at(type))
+		throw std::logic_error("Observer already set");
+
+	sender->observers[type] = observer;
 }
 
 bool Worker::exec_inner(event_type)

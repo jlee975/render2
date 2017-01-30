@@ -5,6 +5,8 @@
 #include <mutex>
 #include <condition_variable>
 
+#include "inplace.h"
+
 #include "config.h"
 
 enum event_type
@@ -23,6 +25,7 @@ struct event;
 template< >
 struct event< UPDATE_TIME >
 {
+	explicit event(double time_) : time(time_) { }
 	double time;
 };
 
@@ -39,6 +42,11 @@ using create_object_event = event< CREATE_OBJECT >;
 template< >
 struct event< UPDATE_POSITIONS >
 {
+	event(double time_, std::vector< point >&& posns_)
+	        : time(time_), posns(std::move(posns_))
+	{
+	}
+
 	double time;
 	std::vector< point > posns;
 };
@@ -54,6 +62,11 @@ using quit_event = event< QUIT >;
 template< >
 struct event< RENDER >
 {
+	event(double time_, std::vector< point >&& posns_)
+	        : time(time_), posns(std::move(posns_))
+	{
+	}
+
 	double time;
 	std::vector< point > posns;
 };
@@ -99,6 +112,12 @@ public:
 	void push(const event< T >& x)
 	{
 		append(new itemt< T >(x));
+	}
+
+	template< event_type T, typename... Args >
+	void emplace(in_place_type_t< event<T> >, Args... args)
+	{
+		append(new itemt< T >(in_place_type<event<T>>, std::forward<Args>(args)...) );
 	}
 
 	/// @todo Don't think we need to lock if head is not null
@@ -175,6 +194,14 @@ private:
 		itemt(event< T > x) : item(T), value(x)
 		{
 		}
+
+		template< typename... Args >
+		itemt(in_place_type_t<event<T>>, Args... args)
+		        : item(T), value(std::forward<Args>(args)...)
+		{
+
+		}
+
 
 		event< T > value;
 	};
