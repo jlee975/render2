@@ -16,6 +16,7 @@ void Worker::exec()
 
 		run = exec_inner(events.type());
 
+		/// @todo Recycle any vectors etc that might be in the event
 		events.pop();
 	}
 }
