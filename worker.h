@@ -71,6 +71,7 @@ protected:
 
 private:
 	virtual bool exec_inner(event_type);
+	virtual void init();
 
 	event_queue events;
 

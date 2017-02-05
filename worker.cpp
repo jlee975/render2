@@ -7,6 +7,8 @@ Worker::Worker() :observers{nullptr}
 
 void Worker::exec()
 {
+	init();
+
 	bool run = true;
 
 	while ( run )
@@ -41,4 +43,9 @@ void Worker::connect(
 bool Worker::exec_inner(event_type)
 {
 	return false;
+}
+
+void Worker::init()
+{
+
 }

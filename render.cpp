@@ -4,11 +4,6 @@
 
 #include "physics.h"
 
-Render::Render() : time(0)
-{
-
-}
-
 bool Render::exec_inner(event_type e)
 {
 	switch ( e )
@@ -22,16 +17,12 @@ bool Render::exec_inner(event_type e)
 			std::cout << u.posns[i].at< 0 >() << "," << u.posns[i].at< 1 >() << "," << u.posns[i].at< 2 >() << "\n";
 		}
 
-		const double t1 = u.time + 1. / 64;
+		notify(in_place_type< done_render_event >, u.time);
 
-		if ( t1 > 10 )
-		{
-			return false;
-		}
-
-		notify(in_place_type<update_time_event>, t1);
 	}
 	break;
+	case QUIT:
+		return false;
 	default:
 		break;
 	} // switch

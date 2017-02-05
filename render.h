@@ -6,11 +6,8 @@
 class Render : public Worker
 {
 public:
-	Render();
 private:
 	bool exec_inner(event_type);
-
-	double time;
 };
 
 

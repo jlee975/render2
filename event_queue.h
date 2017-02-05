@@ -16,6 +16,7 @@ enum event_type
 	QUIT,
 	CREATE_OBJECT,
 	RENDER,
+	DONE_RENDER,
 	NUMBER_OF_EVENT_TYPES
 };
 
@@ -72,6 +73,17 @@ struct event< RENDER >
 };
 
 using render_event = event< RENDER >;
+
+template< >
+struct event< DONE_RENDER >
+{
+	explicit event(double time_) : time(time_) { }
+
+	double time;
+};
+
+using done_render_event = event< DONE_RENDER >;
+
 
 // A queue of "events" with a single consumer thread
 /// @todo Make lock-free

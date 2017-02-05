@@ -7,7 +7,8 @@ SOURCES += main.cpp \
     camera.cpp \
     physics.cpp \
     render.cpp \
-    worker.cpp
+    worker.cpp \
+    clock.cpp
 
 DISTFILES += \
     branches.txt
@@ -22,4 +23,5 @@ HEADERS += \
     event_queue.h \
     render.h \
     worker.h \
-    inplace.h
+    inplace.h \
+    clock.h
